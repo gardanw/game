@@ -1,4 +1,4 @@
-from Element import Element
+from mymodules.Element import Element
 
 
 class Enemy(Element):

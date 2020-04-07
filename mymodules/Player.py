@@ -2,8 +2,8 @@ import time
 
 import pygame
 
-from Bullet import Bullet
-from Element import Element
+from mymodules.Bullet import Bullet
+from mymodules.Element import Element
 
 
 class Player(Element):
@@ -12,25 +12,25 @@ class Player(Element):
         self.__move_side = move_side
         self.__orientation = "Left"
         self.bullet = []
-        # self.__bullet_image = "assets/arrow.png"
-        # self.__bullet_0 = Bullet(self.x, self.y, 0, self.__bullet_image, self.game)
+        self.__bullet_image = "assets/arrow.png"
+        self.__bullet_0 = Bullet(self.x, self.y, 0, self.__bullet_image, self.game)
         self.left, self.right, self.up, self.down = False, False, False, False
         self.cooldown = 0
         self.__time_start = 0
 
     def draw(self):
         if self.__orientation == "Left":
-            self.game.screen.blit(self.image['Left'], (self.x, self.y))
+            self.game.screen.blit(self.image, (self.x, self.y))
         elif self.__orientation == "Right":
-            self.game.screen.blit(self.image['Right'], (self.x, self.y))
+            self.game.screen.blit(self.image, (self.x, self.y))
         elif self.__orientation == "Up":
-            self.game.screen.blit(self.image['Up'], (self.x, self.y))
+            self.game.screen.blit(self.image, (self.x, self.y))
         elif self.__orientation == "Down":
-            self.game.screen.blit(self.image['Down'], (self.x, self.y))
-        # if len(self.game.bullet) < 5:
-        #     self.__bullet_0.x = self.x
-        #     self.__bullet_0.y = self.y
-        #     self.__bullet_0.draw()
+            self.game.screen.blit(self.image, (self.x, self.y))
+        if len(self.game.bullet) < 5:
+            self.__bullet_0.x = self.x
+            self.__bullet_0.y = self.y
+            self.__bullet_0.draw()
 
     def move(self):
         if self.left:

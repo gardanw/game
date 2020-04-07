@@ -6,9 +6,8 @@ class Element:
         self.__x = x
         self.__y = y
         self.__speed = speed
-        img = pygame.image.load(image[0])
-        self.__image = {'Left': img, 'Right': pygame.transform.flip(img, True, False),
-                        'Up': pygame.image.load(image[1]), 'Down': pygame.image.load(image[2])}
+        img = pygame.image.load(image)
+        self.__image = img
         self.__game = game
 
     def draw(self):
