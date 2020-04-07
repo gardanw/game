@@ -6,9 +6,16 @@ class Element:
         self.__x = x
         self.__y = y
         self.__speed = speed
-        img = pygame.image.load(image[0])
-        self.__image = {'Left': img, 'Right': pygame.transform.flip(img, True, False),
-                        'Up': pygame.image.load(image[1]), 'Down': pygame.image.load(image[2])}
+        side_left = []
+        side_right = []
+        side_up = []
+        side_down = []
+        for i in range(len(image[0])):
+            side_left.append(pygame.image.load(image[0][i]))
+            side_right.append(pygame.transform.flip(side_left[-1], True, False))
+            side_up.append(pygame.image.load(image[1][i]))
+            side_down.append(pygame.image.load(image[2][i]))
+        self.__image = {'Left': side_left, 'Right': side_right, 'Up': side_up, 'Down': side_down}
         self.__game = game
 
     def draw(self):
