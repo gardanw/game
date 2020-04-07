@@ -5,6 +5,7 @@ class Element:
     def __init__(self, x, y, speed, image, game):
         self.__x = x
         self.__y = y
+        self.__base_speed = speed
         self.__speed = speed
         side_left = []
         side_right = []
@@ -44,6 +45,10 @@ class Element:
     @property
     def speed(self):
         return self.__speed
+
+    @property
+    def base_speed(self):
+        return self.__base_speed
 
     @property
     def game(self):

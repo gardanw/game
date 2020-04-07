@@ -1,18 +1,23 @@
+import time
+
 import pygame
 
 from mymodules.Element import Element
 
 
+def timer(start, second):
+    if time.time() - start >= second:
+        return True
+    return False
+
+
 class Player(Element):
-    def __init__(self, x, y, speed, image, game, move_side=True):
+    def __init__(self, x, y, speed, image, game):
         Element.__init__(self, x, y, speed, image, game)
-        self.__move_side = move_side
         self.__orientation = "Left"
-        self.bullet = []
         self.left, self.right, self.up, self.down = False, False, False, False
-        self.cooldown = 0
-        self.__time_start = 0
-        self.__animation_stage = 0
+        self.__time_animation = time.time()
+        self.__animation_stage = 2
 
     def draw(self):
         if self.__orientation == "Left":
@@ -37,7 +42,6 @@ class Player(Element):
         if self.down:
             self.y += self.speed
 
-
         if self.x <= 0:
             self.x = 0
         elif self.x >= 736:
@@ -52,13 +56,13 @@ class Player(Element):
 
         # movment
 
-        if self.__move_side and keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT]:
             self.__orientation = "Left"
             self.left = True
         else:
             self.left = False
 
-        if self.__move_side and keys[pygame.K_RIGHT]:
+        if keys[pygame.K_RIGHT]:
             self.__orientation = "Right"
             self.right = True
         else:
@@ -76,10 +80,18 @@ class Player(Element):
         else:
             self.down = False
 
-        if self.left or self.right or self.up or self.down:
+        if keys[pygame.K_LSHIFT]:
+            self.speed = 2.5 * self.base_speed
+        else:
+            self.speed = self.base_speed
+
+        if (self.left or self.right or self.up or self.down) and timer(self.__time_animation, 0.3 / self.speed):
             if self.__animation_stage < 3:
                 self.__animation_stage += 1
+                self.__time_animation = time.time()
             else:
                 self.__animation_stage = 0
+                self.__time_animation = time.time()
         else:
-            self.__animation_stage = 0
+            if timer(self.__time_animation, 0.4 / self.speed):
+                self.__animation_stage = 2

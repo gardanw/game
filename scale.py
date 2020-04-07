@@ -45,6 +45,30 @@ def pygame_img_scale(path, scale=(64, 64)):
 #                 pygame_img_scale(f'assets/7soulsrpggraphics_sprites/Assets/{path}{i}.png', (n, n))
 
 
-filename = r'assets/guiicons/Assets/GUI_Icons/GUI_Icons_png/transparent/arrow_s_t.png'
-img = Image.open(filename)
-img.save('assets/arrow_s_t.ico')
+# filename = r'assets/guiicons/Assets/GUI_Icons/GUI_Icons_png/transparent/arrow_s_t.png'
+# img = Image.open(filename)
+# img.save('assets/arrow_s_t.ico')
+
+
+
+# n = 32
+# for i in range(1, 10):
+#     pygame_img_scale(f'assets/7soulsrpggraphics_sprites/Assets/Monster/Monsters/monster_0{i}.png', (n, n))
+#
+# n = 64
+# for i in range(1, 10):
+#     pygame_img_scale(f'assets/7soulsrpggraphics_sprites/Assets/Monster/Monsters/monster_0{i}.png', (n, n))
+
+# n = 32
+# for i in range(10, 229):
+#     try:
+#         pygame_img_scale(f'assets/7soulsrpggraphics_sprites/Assets/Monster/Monsters/monster_{i}.png', (n, n))
+#     except:
+#         print(f'nie ma {i}')
+#
+# n = 64
+# for i in range(10, 229):
+#     try:
+#         pygame_img_scale(f'assets/7soulsrpggraphics_sprites/Assets/Monster/Monsters/monster_{i}.png', (n, n))
+#     except:
+#         print(f'nie ma {i}')

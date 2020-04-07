@@ -15,7 +15,7 @@ def main():
         side.append(f'assets/7soulsrpggraphics_sprites/Assets/Human (Side)/Full/player_0{i}_64.png')
         back.append(f'assets/7soulsrpggraphics_sprites/Assets/Human (Back)/Full/player_0{i}_64.png')
         front.append(f'assets/7soulsrpggraphics_sprites/Assets/Human (Front)/Full/player_0{i}_64.png')
-    player = Player(735, 268, 3, [side, back, front], game)
+    player = Player(735, 268, 1, [side, back, front], game)
     game.add_element(player)
     game.run()
 
