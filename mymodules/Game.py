@@ -34,8 +34,7 @@ class Game:
         pygame.display.set_caption(caption)
         self.__icon = pygame.image.load(icon)
         pygame.display.set_icon(self.__icon)
-        self.__bullet = []
-        self.__elements = []
+        self.__entity = []
         self.__score = 0
 
     def run(self, color=(167, 184, 86)):
@@ -51,30 +50,14 @@ class Game:
 
             self.__tps_delta += self.__main_clock.tick() / 1000.0
             while self.__tps_delta > 1 / self.__tps_max:
-                for element in self.__elements:
+                for element in self.__entity:
                     element.move()
                     element.tick()
 
-                for bullet in self.__bullet:
-                    bullet.move()
-                    if bullet.x < 0:
-                        bullet.delete()
-
-                for bullet in self.__bullet:
-                    for element in self.__elements:
-                        if type(element) == Enemy and is_collision(element, bullet):
-                            bullet.delete()
-                            self.__score += 1
-                            element.x = random.randint(20, 300)
-                            element.y = random.randint(5, 530)
-
                 self.__tps_delta -= 1 / self.__tps_max
 
-            for element in self.__elements:
+            for element in self.__entity:
                 element.draw()
-
-            for bullet in self.__bullet:
-                bullet.draw()
 
             draw_text('score = %s' % self.__score, pygame.font.SysFont(None, 48), 0, 0, self.__screen)
 
@@ -86,27 +69,19 @@ class Game:
 
     @property
     def elements(self):
-        return self.__elements
-
-    @property
-    def bullet(self):
-        return self.__bullet
+        return self.__entity
 
     def add_element(self, element):
         if type(element) == list:
-            self.__elements += element
+            self.__entity += element
         else:
-            self.__elements.append(element)
-
-    def add_bullet(self, bullet):
-        self.__bullet.append(bullet)
+            self.__entity.append(element)
 
 
 if __name__ == "__main__":
     game = Game("arrow", 'assets/guiicons/Assets/GUI_Icons/GUI_Icons_png/transparent/arrow_s_t.png')
-    player = Player(735, 268, 3, 'assets/7soulsrpggraphics_sprites/Assets/Human (Side)/Full/player_01_64.png', game)
-    enemy = [Enemy(10, 10, 1, 'assets/ghoul.png', game), Enemy(60, 60, 1, 'assets/ghoul.png', game),
-             Enemy(10, 10, 1, 'assets/ghoul.png', game)]
+    player = Player(735, 268, 3, ['assets/7soulsrpggraphics_sprites/Assets/Human (Side)/Full/player_01_64.png',
+                                  'assets/7soulsrpggraphics_sprites/Assets/Human (Back)/Full/player_01_64.png',
+                                  'assets/7soulsrpggraphics_sprites/Assets/Human (Front)/Full/player_01_64.png'], game)
     game.add_element(player)
-    game.add_element(enemy)
     game.run()
