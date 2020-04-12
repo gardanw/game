@@ -11,7 +11,7 @@ class Bullet(Element):
 
     def move(self):
         if self.__state == 1:
-            self.x -= self.speed
+            self.x -= self.__speed
         if self.x < 0:
             self.__del__()
 

@@ -15,6 +15,19 @@ def pygame_img_scale(path, scale=(64, 64)):
     pygame.image.save(img, ''.join(new_path))
 
 
+def pil_crop(path, box):
+    im = Image.open(path)
+    width, height = im.size
+    count = 1
+    for i in range(0, width, box[0]):
+        for j in range(0, height, box[1]):
+            new_im = im.crop((j, i, j + box[0], i + box[1]))
+            new_path = path.split('.')
+            new_path[-1] = f'_{count}.' + new_path[-1]
+            new_im.save(''.join(new_path))
+            count += 1
+
+
 # for i in range(1, 10):
 #     pygame_img_save(f'assets/7soulsrpggraphics_sprites/Assets/Human (Back)/Full/full_0{i}.png')
 # for i in range(10, 241):
@@ -50,7 +63,6 @@ def pygame_img_scale(path, scale=(64, 64)):
 # img.save('assets/arrow_s_t.ico')
 
 
-
 # n = 32
 # for i in range(1, 10):
 #     pygame_img_scale(f'assets/7soulsrpggraphics_sprites/Assets/Monster/Monsters/monster_0{i}.png', (n, n))
@@ -72,3 +84,5 @@ def pygame_img_scale(path, scale=(64, 64)):
 #         pygame_img_scale(f'assets/7soulsrpggraphics_sprites/Assets/Monster/Monsters/monster_{i}.png', (n, n))
 #     except:
 #         print(f'nie ma {i}')
+
+pil_crop('assets/2dhandpainted_towntileset/Assets/64x64/Town@64x64.png', (64, 64))

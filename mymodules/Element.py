@@ -2,21 +2,10 @@ import pygame
 
 
 class Element:
-    def __init__(self, x, y, speed, image, game):
+    def __init__(self, x, y, image, game):
         self.__x = x
         self.__y = y
-        self.__base_speed = speed
-        self.__speed = speed
-        side_left = []
-        side_right = []
-        side_up = []
-        side_down = []
-        for i in range(len(image[0])):
-            side_left.append(pygame.image.load(image[0][i]))
-            side_right.append(pygame.transform.flip(side_left[-1], True, False))
-            side_up.append(pygame.image.load(image[1][i]))
-            side_down.append(pygame.image.load(image[2][i]))
-        self.__image = {'Left': side_left, 'Right': side_right, 'Up': side_up, 'Down': side_down}
+        self.__image, self.__size = self.__set_image(image)
         self.__game = game
 
     def draw(self):
@@ -28,11 +17,37 @@ class Element:
     def tick(self):
         pass
 
-    def shot(self):
-        pass
+    @staticmethod
+    def __set_image(image):
+        if type(image) == dict:
+            side_left = []
+            side_right = []
+            side_up = []
+            side_down = []
+            size = None
+            for side in image:
+                for img in image[side]:
+                    if side == 'back':
+                        side_up.append(pygame.image.load(img))
+                        if not size:
+                            size = side_up[-1].get_size()
+                    elif side == 'side':
+                        side_left.append(pygame.image.load(img))
+                        side_right.append(pygame.transform.flip(side_left[-1], True, False))
+                        if not size:
+                            size = side_left[-1].get_size()
+                    elif side == 'front':
+                        side_down.append(pygame.image.load(img))
+                        if not size:
+                            size = side_down[-1].get_size()
+            return {'Left': side_left, 'Right': side_right, 'Up': side_up, 'Down': side_down}, size
+        elif type(image) == str:
+            img = pygame.image.load(image)
+            size = img.get_size()
+            return img, size
 
     def __str__(self):
-        return str(self.__x) + ' ' + str(self.__y) + ' ' + str(self.__speed)
+        return str(self.__x) + ' ' + str(self.__y)
 
     @property
     def x(self):
@@ -43,12 +58,12 @@ class Element:
         return self.__y
 
     @property
-    def speed(self):
-        return self.__speed
+    def size(self):
+        return self.__size
 
     @property
-    def base_speed(self):
-        return self.__base_speed
+    def pos(self):
+        return self.__x + self.__size[0] / 2, self.__y + self.__size[1] / 2
 
     @property
     def game(self):
@@ -65,10 +80,6 @@ class Element:
     @y.setter
     def y(self, y):
         self.__y = y
-
-    @speed.setter
-    def speed(self, speed):
-        self.__speed = speed
 
 
 if __name__ == "__main__":

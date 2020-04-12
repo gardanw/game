@@ -21,7 +21,7 @@ def draw_text(text, font, x, y, screen, color=(255, 255, 255)):
 
 
 class Game:
-    def __init__(self, caption, icon, width=800, height=600):
+    def __init__(self, caption, icon, width=800, height=600, color=(167, 184, 86)):
         self.__tps_max = 100.0
 
         pygame.init()
@@ -35,12 +35,15 @@ class Game:
         self.__icon = pygame.image.load(icon)
         pygame.display.set_icon(self.__icon)
         self.__entity = []
+        self.__background = []
         self.__score = 0
+        self.color = color
 
-    def run(self, color=(167, 184, 86)):
+    def run(self):
         running = True
         while running:
-            self.__screen.fill(color)
+
+            self.__screen.fill(self.color)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -56,10 +59,13 @@ class Game:
 
                 self.__tps_delta -= 1 / self.__tps_max
 
+            for bg in self.__background:
+                bg.draw()
+
             for element in self.__entity:
                 element.draw()
 
-            draw_text('score = %s' % self.__score, pygame.font.SysFont(None, 48), 0, 0, self.__screen)
+            # draw_text('score = %s' % self.__score, pygame.font.SysFont(None, 48), 0, 0, self.__screen)
 
             pygame.display.update()
 
@@ -77,11 +83,21 @@ class Game:
         else:
             self.__entity.append(element)
 
+    @property
+    def background(self):
+        return self.__background
+
+    def add_background(self, background):
+        if type(background) == list:
+            self.__background += background
+        else:
+            self.__background.append(background)
+
 
 if __name__ == "__main__":
-    game = Game("arrow", 'assets/guiicons/Assets/GUI_Icons/GUI_Icons_png/transparent/arrow_s_t.png')
-    player = Player(735, 268, 3, ['assets/7soulsrpggraphics_sprites/Assets/Human (Side)/Full/player_01_64.png',
-                                  'assets/7soulsrpggraphics_sprites/Assets/Human (Back)/Full/player_01_64.png',
-                                  'assets/7soulsrpggraphics_sprites/Assets/Human (Front)/Full/player_01_64.png'], game)
+    game = Game("arrow", 'assets/guiicons/Assets/GUI_Icons/GUI_Icons_png/transparent/arrow_s_t.png', color=(0, 0, 0))
+    player = Player(0, 0, 3, ['assets/7soulsrpggraphics_sprites/Assets/Human (Side)/Full/player_01_64.png',
+                              'assets/7soulsrpggraphics_sprites/Assets/Human (Back)/Full/player_01_64.png',
+                              'assets/7soulsrpggraphics_sprites/Assets/Human (Front)/Full/player_01_64.png'], game)
     game.add_element(player)
     game.run()

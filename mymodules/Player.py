@@ -13,8 +13,10 @@ def timer(start, second):
 
 class Player(Element):
     def __init__(self, x, y, speed, image, game):
-        Element.__init__(self, x, y, speed, image, game)
-        self.__orientation = "Left"
+        super().__init__(x, y, image, game)
+        self.__base_speed = speed
+        self.__speed = speed
+        self.__orientation = "Down"
         self.left, self.right, self.up, self.down = False, False, False, False
         self.__time_animation = time.time()
         self.__animation_stage = 2
@@ -31,25 +33,33 @@ class Player(Element):
 
     def move(self):
         if self.left:
-            self.x += -self.speed
+            self.x += -self.__speed
 
         if self.right:
-            self.x += self.speed
+            self.x += self.__speed
 
         if self.up:
-            self.y += -self.speed
+            self.y += -self.__speed
 
         if self.down:
-            self.y += self.speed
+            self.y += self.__speed
 
-        if self.x <= 0:
-            self.x = 0
-        elif self.x >= 736:
-            self.x = 736
-        if self.y <= 0:
-            self.y = 0
-        elif self.y >= 536:
-            self.y = 536
+        if self.x < 0:
+            self.x = self.game.screen.get_width() - self.size[0] - 1
+            for bg in self.game.background:
+                bg.move('right')
+        elif self.x > self.game.screen.get_width() - self.size[0]:
+            self.x = 1
+            for bg in self.game.background:
+                bg.move('left')
+        if self.y < 0:
+            self.y = self.game.screen.get_height() - self.size[1] - 1
+            for bg in self.game.background:
+                bg.move('down')
+        elif self.y > self.game.screen.get_height() - self.size[1]:
+            self.y = 1
+            for bg in self.game.background:
+                bg.move('up')
 
     def tick(self):
         keys = pygame.key.get_pressed()
@@ -81,11 +91,11 @@ class Player(Element):
             self.down = False
 
         if keys[pygame.K_LSHIFT]:
-            self.speed = 2.5 * self.base_speed
+            self.__speed = 2.5 * self.__base_speed
         else:
-            self.speed = self.base_speed
+            self.__speed = self.__base_speed
 
-        if (self.left or self.right or self.up or self.down) and timer(self.__time_animation, 0.3 / self.speed):
+        if (self.left or self.right or self.up or self.down) and timer(self.__time_animation, 0.3 / self.__speed):
             if self.__animation_stage < 3:
                 self.__animation_stage += 1
                 self.__time_animation = time.time()
@@ -93,5 +103,5 @@ class Player(Element):
                 self.__animation_stage = 0
                 self.__time_animation = time.time()
         else:
-            if timer(self.__time_animation, 0.4 / self.speed):
+            if timer(self.__time_animation, 0.4 / self.__speed):
                 self.__animation_stage = 2
