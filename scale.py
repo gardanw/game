@@ -28,6 +28,25 @@ def pil_crop(path, box):
             count += 1
 
 
+def pil_merge(path_to_image, path_to_temp_file):
+    with open(path_to_temp_file) as temp:
+        rl = temp.readlines()
+        width, height = len(rl[0].split()) * 64, len(rl) * 64
+        img = Image.open(r'assets\2dhandpainted_towntileset\Assets\64x64\Town@64x64_crop\Town@64x64_2.png')
+        img = img.resize((width, height))
+    with open(path_to_temp_file) as temp:
+        x = 0
+        y = 0
+        for line in temp:
+            for i in line.split():
+                element = Image.open(path_to_image.format(int(i)))
+                img.paste(element, (64 * x, 64 * y))
+                x += 1
+            x = 0
+            y += 1
+    return img
+
+
 # for i in range(1, 10):
 #     pygame_img_save(f'assets/7soulsrpggraphics_sprites/Assets/Human (Back)/Full/full_0{i}.png')
 # for i in range(10, 241):
@@ -85,4 +104,10 @@ def pil_crop(path, box):
 #     except:
 #         print(f'nie ma {i}')
 
-pil_crop('assets/2dhandpainted_towntileset/Assets/64x64/Town@64x64.png', (64, 64))
+# pil_crop('assets/2dhandpainted_towntileset/Assets/64x64/Town@64x64.png', (64, 64))
+
+# img = Image.open(r'assets\2dhandpainted_towntileset\Assets\64x64\Town@64x64_crop\Town@64x64_2.png')
+# img = img.resize((2048, 2048))
+# img.save(r'C:\Users\Damian\Desktop\Programowanie\Python\Projekt_gry\game\test.png')
+# img = pil_merge(r'assets\2dhandpainted_towntileset\Assets\64x64\Town@64x64_crop\Town@64x64_{}.png', r'screen2')
+# img.save(r'assets\2dhandpainted_towntileset\Assets\64x64\grass.png')
